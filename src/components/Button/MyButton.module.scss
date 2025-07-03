@@ -1,0 +1,26 @@
+.button {
+    min-width: 40px;
+    height: 40px;
+    margin: 0 4px;
+    color: #000;
+    font-size: 1.2rem;
+    background-color: #bbadb5;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    &:hover{
+        color: #fff ;
+    }
+}
+
+.primary{
+    background-color: #d64020;
+}
+
+.disable{
+    opacity: 0.3;
+    cursor:progress;
+    &:hover{
+        color: #000 ;
+    }
+}
