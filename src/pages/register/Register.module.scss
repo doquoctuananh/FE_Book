@@ -1,0 +1,32 @@
+.register{
+    width: 100%;
+    height: 100vh;
+    background-color: aqua;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register_form{
+    min-width: 400px;
+    min-height: 300px;
+    background-color: #fff;
+    padding: 16px 16px 36px;
+
+    h2{
+        text-align: center;
+        padding: 0;
+        margin: 0;
+        font-size: 2.4rem;
+    }
+
+    .form{
+        margin-bottom: 16px;
+    }
+
+    .form_footer{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
