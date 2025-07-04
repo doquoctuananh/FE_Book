@@ -4,8 +4,8 @@ import styles from '~pages/register/Register.module.scss'
 import clsx from 'clsx';
 import MyInput from '../../components/Input/MyInput.jsx';
 import MyButton from '~components/Button/MyButton.jsx';
-import { isRequired,isEmail,isPhone ,isAddress,isPassword,isGender} from './Validate.jsx';
-import { useNavigate } from 'react-router-dom';
+import { validateForm} from './Validate.jsx';
+import { data, useNavigate } from 'react-router-dom';
 
 
 function Register() {
@@ -18,7 +18,7 @@ function Register() {
         gender:'',
         password:''
     })
-    console.log(register)
+    
     const [error,setError] = useState({})
     
     const handleChange = (e) => {
@@ -36,33 +36,41 @@ function Register() {
 
     const handleSubmitRegister = (e) => {
         e.preventDefault();
-        let newError= {}
-        if(isRequired(register.username) !== true){
-            newError.username = isRequired(register.username);
-        }
-        if(isEmail(register.email) !== true ){
-            newError.email = isEmail(register.email)
-        }
-
-        if(isAddress(register.address) !== true){
-            newError.address = isAddress(register.address)
-        }
-        if(isPhone(register.phone) !== true){
-            newError.phone = isPhone(register.phone)
-        }
-
-        if(isPassword(register.password) !== true){
-            newError.password = isPassword(register.password)
-        }
-        if(isGender(register.gender) !== true){
-            newError.gender = isGender(register.gender)
-        }
-
+        let newError = validateForm(register);
         setError(newError)
 
         if(Object.keys(newError).length ===0) {
-            console.log("Gui du lieu thanh cong chuyen huowng")
-            navigator("/login")
+            let newRegister = {...register,gender: parseInt(register.gender)}
+            fetch("http://localhost:8080/api/auth/register",{
+                method:"POST",
+                headers:{
+                   "Content-Type":"application/json"
+                },
+                body :JSON.stringify(newRegister)
+            })
+            .then(async (response) =>  {
+                if(response.status == 409){
+                    let responseError = await(response.json())
+                    setError(prev => {
+                        return {
+                            ...prev,
+                            ...responseError
+                        }
+                    })
+                    return;
+                }
+                return response.json()
+                
+            })
+            .then(data => {
+                if(data.id >0 && data ){
+                    console.log("Đăng kí thành công")
+                    navigator("/login")
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            }) 
         }
     }
 
@@ -117,6 +125,7 @@ function Register() {
 
                         <div className={clsx(styles.form_footer)}>
                             <MyButton type="submit"  primary>Đăng Kí</MyButton>
+                            <MyButton link to= "/login" >Đăng Nhập</MyButton>
                         </div>
                     </form>
                     

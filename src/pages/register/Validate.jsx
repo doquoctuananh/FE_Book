@@ -2,9 +2,7 @@ import { useContext } from "react"
 
 
 const isRequired = (value) => {
-    // if (value == null) {
-    //     return 'Không được để trống';
-    // }
+    
     return value === '' ? 'Không được để trống' : value.length >= 6 ? true :'Độ dài lớn hơn 6' ;
 }
 
@@ -29,4 +27,49 @@ const isGender = (value) => {
     return value == '' ? "Không được để trống" : true;
 }
 
-export {isRequired,isEmail,isAddress,isPhone,isPassword,isGender}
+const validateForm = (register) => {
+    let newError= {}
+        if(isRequired(register.username) !== true){
+            newError.username = isRequired(register.username);
+        }
+        if(isEmail(register.email) !== true ){
+            newError.email = isEmail(register.email)
+        }
+
+        if(isAddress(register.address) !== true){
+            newError.address = isAddress(register.address)
+        }
+        if(isPhone(register.phone) !== true){
+            newError.phone = isPhone(register.phone)
+        }
+
+        if(isPassword(register.password) !== true){
+            newError.password = isPassword(register.password)
+        }
+        if(isGender(register.gender) !== true){
+            newError.gender = isGender(register.gender)
+        }
+
+    return newError;
+}
+
+const isRequiredLoginUsename = (value) => {
+    return value == '' ? "Không được để trống" : true;
+}
+
+const isRequiredLoginPassword = (value) => {
+    return value == '' ? "Không được để trống" : true;
+}
+
+const validateFormLogin = (value) => {
+    const errors = {}
+    if(isRequiredLoginUsename(value.userName) !== true){
+        errors.userName = isRequiredLoginUsename(value.userName)
+    }
+    if(isRequiredLoginPassword(value.passWord) !== true){
+        errors.passWord = isRequiredLoginPassword(value.passWord)
+    }
+    return errors;
+}
+
+export {validateForm,validateFormLogin}
