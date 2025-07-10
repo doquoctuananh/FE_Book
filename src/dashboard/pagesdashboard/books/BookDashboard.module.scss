@@ -1,0 +1,25 @@
+.app{
+    padding: 8px;
+}
+
+.heading {
+    width: 100%;
+}
+
+.content{
+    margin-top: 3.2rem;
+    padding: 0 2.4rem;
+    display: flex;
+    align-items: center;
+    // justify-content: space-between;
+    flex-wrap: wrap;
+    row-gap: 1.6rem;
+    column-gap: 2rem;
+}
+
+.page{
+    margin-top: 1.6rem;
+    display: flex;
+    justify-content: center;
+}
+
