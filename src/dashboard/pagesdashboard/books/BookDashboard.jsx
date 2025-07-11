@@ -1,12 +1,15 @@
 import clsx from "clsx";
 import styles from "~dashboard/pagesdashboard/books/BookDashboard.module.scss"
+import stylesCard from "~components/Card/Card.module.scss"
 import DefaultLayoutDashboard from "../../components/Layouts/DefaultLayoutDashboard/DefaultLayoutDashboard.jsx";
 import MyButton from "~components/Button/MyButton.jsx"
 import Card from "~components/Card/Card.jsx"
 import ForwardPage from "../../../components/ForwardPage/ForwardPage.jsx";
 import SearchDashboard from "~dashboard/components/Search/SearchDashboard.jsx"
 import MyInput from "~components/Input/MyInput.jsx"
+import FormBook from "../../components/FormBook/FormBook.jsx";
 import { useCallback, useEffect, useState } from "react";
+import {validateImportMore} from "~pages/register/Validate.jsx"
 function BookDashboard() {
     const [books,setBooks] = useState({});
     const [typeBook,setTypeBook] = useState([]);
@@ -17,6 +20,16 @@ function BookDashboard() {
         Book:"",
         Type : ""
     })
+    const [showImportMore,setShowImportMore] = useState(false);
+    const [importMore,setImportMore] = useState({
+        "Import_Price":"",
+        "Quantity":"",
+    })
+    const [errorImportMore,setErrorImportMore] = useState({
+        "Import_Price":"",
+        "Quantity":"",
+    })
+    const [bookId,setBookId] = useState(0)
 
     let token = localStorage.getItem("token")
     useEffect(() => {
@@ -78,13 +91,82 @@ function BookDashboard() {
     const handleReset = useCallback(() => {
         setIsSearch(0)
     })
+    const handleCloseFormImportMore = useCallback(() => {
+        setShowImportMore(false)
+        setErrorImportMore({
+            "Import_Price":"",
+            "Quantity":""
+        })
+        setImportMore({
+            "Import_Price":"",
+            "Quantity":""
+        })
+    },[])
 
-    console.log(paramSearch)
+    const handleImportMore = useCallback((e) => {
+        const bookId = e.target.closest(`.${stylesCard.card}`).getAttribute("data_id")
+        setBookId(bookId)
+        setShowImportMore(true)
+    },[])
 
-    console.log(books)
+    const handleImport = (e) => {
+        let errors = validateImportMore(importMore);
+        if(Object.keys(errors).length > 0){
+            setErrorImportMore(errors)
+        }
+        else{
+            let params = new URLSearchParams();
+            params.append("bookId",bookId);
+            params.append("quantity",importMore.Quantity);
+            params.append("importPrice",importMore.Import_Price)
+            let query = params.toString();
+            fetch(`http://localhost:8080/api/dashboard/importbooks/importmore?${query}`,{
+                method: "POST",
+                headers : {
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                setTimeout(() => {
+                    data.message
+                },300)
+                setShowImportMore(false)
+                setIsSearch(prev => prev+1)
+            })
+        }
+    }
+
+    const handChangeInput =useCallback((e) => {
+        setImportMore(prev => {
+            return {
+                ...prev,
+                [e.target.name]:e.target.value
+            }
+        })
+        setErrorImportMore(prev => {
+            return {
+                ...prev,
+                [e.target.name]: ""
+            }
+        })
+    },[])
+
+   
     return ( <div>
-        <DefaultLayoutDashboard>
+        <FormBook 
+                    show = {showImportMore}
+                    handleCloseForm= {handleCloseFormImportMore}
+                    importBook = {importMore}
+                    handChangeInput= {handChangeInput}
+                    errors ={errorImportMore}
+                >
+                    <MyButton  primary onClick ={handleImport}>+Import</MyButton>
+        </FormBook>
+
+        <DefaultLayoutDashboard>    
             <div className={clsx(styles.app)}>
+                
                 <div className={clsx(styles.heading)}>
                     <SearchDashboard 
                         handleSearch ={handleSearch} 
@@ -120,6 +202,7 @@ function BookDashboard() {
                 <div className={clsx(styles.content)}>
                     {Object.keys(books).length > 0 && books.content.map((cur,index) => {
                         return <Card 
+                                data_id={cur.id}
                                 key = {index}  
                                 img = {cur.imageUrl}
                                 name={cur.bookName}
@@ -128,7 +211,7 @@ function BookDashboard() {
                                 language = {cur.language}
                                 author = {cur.author}
                                 >
-                                    <MyButton primary>Import More Product</MyButton>
+                                    <MyButton primary onClick = {handleImportMore}>Import More Product</MyButton>
                                 </Card>
                     })}
 
