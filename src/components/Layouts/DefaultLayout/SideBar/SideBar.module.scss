@@ -1,5 +1,27 @@
 .sidebar{
-    width: 20%;
-    height: 100%;
-    background-color: #000;
+    width: 30%;
+    min-height: 1000px;
+    background-color: rgb(255, 234, 216);
+    padding-top: 32px;
+    padding-left: 12px;
+    padding-right: 12px;
+    border-radius: 6px;
+    h1{
+        font-size: 2.4rem;
+    //    text-transform: uppercase;
+    }
+}
+
+.choose{
+    margin: 12px 0;
+    
+    span{
+        align-items: center;
+
+        .icon{
+            padding: 0px 8px;
+
+        }
+    }
+    
 }

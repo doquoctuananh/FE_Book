@@ -1,0 +1,20 @@
+.app{
+    margin-bottom: 12px;
+}
+
+.typography{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.accordion{
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+
+    span{
+        font-size: 1.2rem;
+    }
+}
