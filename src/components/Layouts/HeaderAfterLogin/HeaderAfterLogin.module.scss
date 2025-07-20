@@ -1,0 +1,15 @@
+
+.cart{
+    margin-left: 16px ;
+    display: flex;
+    align-items: center;
+}
+
+.cart_item{
+    margin-right: 16px;
+    font-size: 36px;
+    cursor: pointer;
+    &:hover{
+        color: rgb(204, 154, 154);
+    }
+}
