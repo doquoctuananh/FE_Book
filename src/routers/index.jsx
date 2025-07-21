@@ -7,6 +7,8 @@ import Register from '~pages/register/Register'
 
 //user
 import Book from "~pages/book/Book.jsx"
+import Cart from "~pages/cart/Cart.jsx"
+import Order from "~pages/order/Order.jsx"
 
 //admin
 import HomeDashboard from '~dashboard/pagesdashboard/home/HomeDashboard.jsx'
@@ -28,7 +30,9 @@ const publicRoute = [
 
 // user 
 const privateRoute = [
-    {path:"/api/books",component : Book}
+    {path:"/api/books",component : Book},
+    {path:"/api/books/cart",component : Cart},
+    {path:"/api/books/orders",component : Order},
 ]
 
 //admin

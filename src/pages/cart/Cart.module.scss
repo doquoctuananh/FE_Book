@@ -1,0 +1,56 @@
+.content{
+    // width: 1280px;
+    display: flex;
+    justify-content: center;
+}
+
+.paper{
+    width: 1280px;
+    min-height: 580px;
+    margin-top: 24px;
+    padding-bottom: 80px;
+    img{
+        width: 100px;
+        height: 80px;
+        border-radius: 4px;
+    }
+    .iconDelete{
+        cursor: pointer;
+        font-size: 24px;
+        &:hover{
+            scale:1.3;
+            color:#FB4141
+        }
+    }
+
+    .quantity{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+    .iconsub,.iconadd{
+        padding: 6px;
+        margin: 6px;
+        cursor: pointer;
+        border-radius: 4px;
+        color: #fff;
+        background-color: #FB4141;
+        &:hover{
+            scale: 1.3;
+        }
+    }
+
+    .iconsub{
+        background-color: #000000;
+    }
+}
+
+.checkout{
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.footer{
+    margin-top: 150px;
+}
